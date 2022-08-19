@@ -7,11 +7,30 @@ import StickyFooter from "./components/FooterComp";
 import NavbarComp from "./components/NavbarComp";
 import { Outlet } from "react-router-dom";
 
-const theme = createTheme();
+
+const themeLight = createTheme({
+  palette: {
+    background: {
+      default: "rgb(231, 235, 240)",
+    },
+  },
+});
+
+const themeDark = createTheme({
+  palette: {
+    background: {
+      default: "#222222",
+    },
+    text: {
+      primary: "#ffffff",
+    },
+  },
+});
 
 function App() {
+  const [light, setLight] = React.useState(true);
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={light ? themeLight : themeDark}>
       <GlobalStyles styles={{ ul: { margin: 0, padding: 0 } }} />
       <CssBaseline />
       <NavbarComp />

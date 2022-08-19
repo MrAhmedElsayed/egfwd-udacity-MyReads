@@ -2,6 +2,8 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import BookCard from "./BookCard";
+import Divider from "@mui/material/Divider";
+
 
 const BooksList = [
   {
@@ -57,9 +59,11 @@ const BooksList = [
 export default function WanttoReadComp() {
   return (
     <React.Fragment>
-      <Typography gutterBottom variant="h4" component="h1">
-        Want to Read
-      </Typography>
+      <Divider variant="middle" sx={{ my: 4 }}>
+        <Typography gutterBottom variant="h4" component="h1">
+          Want to Read
+        </Typography>
+      </Divider>
       <Grid container spacing={4}>
         {BooksList.map((book) => (
           <Grid item key={book.id} xs={12} sm={6} md={3}>

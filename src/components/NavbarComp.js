@@ -14,6 +14,13 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import profileImage from '../2.jpg';
 
+/* 
+TODO:
+switch theme
+https://mui.com/material-ui/react-switch/#customization
+*/
+
+
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 

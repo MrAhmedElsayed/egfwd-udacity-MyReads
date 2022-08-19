@@ -2,6 +2,21 @@ import * as React from "react";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import BookCard from "./BookCard";
+import Divider from "@mui/material/Divider";
+
+/*
+get all books 
+copy currently read books 
+to another array
+and use it for add or delete or move
+from shelf to shelf
+*/
+
+// async function GetImage() {
+//   const da = await booApi.getAll()
+//   console.log(da)
+//   return da;
+// }
 
 const BooksList = [
   {
@@ -54,12 +69,15 @@ const BooksList = [
   },
 ];
 
+
 export default function CurrentlyReadingComp() {
   return (
     <React.Fragment>
-      <Typography gutterBottom variant="h4" component="h1">
-        Currently Reading
-      </Typography>
+      <Divider variant="middle" sx={{ my: 4 }}>
+        <Typography gutterBottom variant="h4" component="h1">
+          Currently Reading
+        </Typography>
+      </Divider>
       <Grid container spacing={4}>
         {BooksList.map((book) => (
           <Grid item key={book.id} xs={12} sm={6} md={3}>
