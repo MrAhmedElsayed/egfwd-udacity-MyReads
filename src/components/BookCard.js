@@ -8,6 +8,7 @@ const bookStatus = [
   { title: "Want To Read", value: "wantToRead" },
   { title: "Currently Read", value: "currentlyReading" },
   { title: "Read", value: "read" },
+  { title: "None", value: "none" },
 ];
 
 const BookCard = ({ bookObject }) => {

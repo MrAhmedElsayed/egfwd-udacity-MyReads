@@ -9,27 +9,36 @@ const SearchPage = () => {
   const [searchMeassage, setSearchMeassage] = useState("Please provide a search input ....")
 
   const handleInputChange = (event) => {
+    event.preventDefault();
     setSearchInput(event.target.value);
     // console.log("input value is:", event.target.value);
-  };
-
-  const handleSearch = (event) => {
-    event.preventDefault();
     search(searchInput).then((res) => {
+      console.log(searchInput)
       if (res.length > 0) {
         setSearchResult(res)  
       } else {
         setSearchMeassage(`No search result for "${searchInput}"`)
       }
     });
-    // console.log("submit");
   };
+
+  // const handleSearch = (event) => {
+  //   event.preventDefault();
+  //   search(searchInput).then((res) => {
+  //     if (res.length > 0) {
+  //       setSearchResult(res)  
+  //     } else {
+  //       setSearchMeassage(`No search result for "${searchInput}"`)
+  //     }
+  //   });
+  //   // console.log("submit");
+  // };
 
   return (
     <React.Fragment>
       <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
-          <form method="POST">
+          
             <label
               htmlFor="default-search"
               className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-gray-300"
@@ -65,14 +74,14 @@ const SearchPage = () => {
                 value={searchInput}
               />
               <button
-                type="submit"
-                onClick={handleSearch}
+                type="button"
+                onClick={handleInputChange}
                 className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Search
               </button>
             </div>
-          </form>
+          
         </div>
       </div>
 

@@ -1,4 +1,5 @@
-// import { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 const FabFixedBtn = ({ btnHref, btnColor }) => {
   // how to add color for every button
@@ -8,8 +9,8 @@ const FabFixedBtn = ({ btnHref, btnColor }) => {
 
   return (
     <div className="fixed bottom-0 right-5 w-full">
-      <a className={classNameVar} href={btnHref}>
-        {btnHref === "/search" ? (
+      <Link className={classNameVar} to={btnHref}>
+      {btnHref === "/search" ? (
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6"
@@ -40,7 +41,7 @@ const FabFixedBtn = ({ btnHref, btnColor }) => {
             />
           </svg>
         )}
-      </a>
+      </Link>
     </div>
   );
 };
