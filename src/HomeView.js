@@ -5,13 +5,12 @@ import defaultImage from "./images/default_img.jpg";
 
 const HomeView = () => {
   const [allBooks, setallBooks] = useState([]);
-
-  const dropdownOnChange = (event, bookID) => {
-    update(bookID, event.target.value)
-      .then((resp) => {
-        getAll().then((res) => {
-          setallBooks(res);
-        });
+  // thank you sir this helps!
+  const handleShelfChange = (shelf, book) => {
+    book.shelf = shelf.target.value;
+    update(book, shelf.target.value)
+      .then(() => {
+        setallBooks([...allBooks.filter((b) => b.id !== book.id), book]);
       })
       .catch((err) => console.log(err));
   };
@@ -35,7 +34,6 @@ const HomeView = () => {
         <div className="list-books-title">
           <h1>MyReads</h1>
         </div>
-
         <div className="list-books-content">
           <div>
             <div className="bookshelf">
@@ -61,7 +59,7 @@ const HomeView = () => {
                               <select
                                 value={book.shelf}
                                 onChange={(event) =>
-                                  dropdownOnChange(event, book)
+                                  handleShelfChange(event, book)
                                 }
                               >
                                 <option value="none" disabled>
@@ -114,7 +112,7 @@ const HomeView = () => {
                             <select
                               value={book.shelf}
                               onChange={(event) =>
-                                dropdownOnChange(event, book)
+                                handleShelfChange(event, book)
                               }
                             >
                               <option value="none" disabled>
@@ -166,7 +164,7 @@ const HomeView = () => {
                             <select
                               value={book.shelf}
                               onChange={(event) =>
-                                dropdownOnChange(event, book)
+                                handleShelfChange(event, book)
                               }
                             >
                               <option value="none" disabled>
