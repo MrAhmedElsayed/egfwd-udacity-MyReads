@@ -1,4 +1,5 @@
 import React from "react";
+import defaultImage from "./images/default_img.jpg";
 
 const Book = ({ book, shelves, onUpdateBookShelf }) => {
   return (
@@ -20,9 +21,7 @@ const Book = ({ book, shelves, onUpdateBookShelf }) => {
             onChange={(event) => onUpdateBookShelf(event, book)}
           >
             <option disabled> Move to...</option>
-            {shelves.map((shelf) => {
-              <option value={shelf.shelfName}>{shelf.shelfDisplayName}</option>;
-            })}
+            {shelves.map((shelf) =>  <option key={shelf.id} value={shelf.shelfName}>{shelf.shelfDisplayName}</option> )}
             <option value="none">None</option>
           </select>
         </div>

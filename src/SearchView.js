@@ -4,6 +4,7 @@ import { search, update, getAll } from "./BooksAPI";
 import defaultImage from "./images/default_img.jpg";
 
 const SearchView = () => {
+  
   const [searchInput, setSearchInput] = useState("");
   const [resultBooks, setResultBooks] = useState([]);
   const [owendBooks, setOwendBooks] = useState([]);
@@ -25,42 +26,41 @@ const SearchView = () => {
   let filterTimeout;
 
   const searchOnChange = (event) => {
-    clearTimeout(filterTimeout);
-    setSearchInput(event.target.value);
+    
     if (!event.target.value) return setResultBooks([]);
+
+    clearTimeout(filterTimeout);
+
     filterTimeout = setTimeout(() => {
-      search(searchInput, 300).then((response) => {
-        if (response.length > 0) {
-          for (let b = 0; b < response.length; b++) {
+      search(searchInput, 300).then((searchReturnedBooks) => {
+        if (searchReturnedBooks.length > 0) {
+          for (let b = 0; b < searchReturnedBooks.length; b++) {
+            
+            searchReturnedBooks[b]["shelf"] = "none";
+
             for (let bo = 0; bo < owendBooks.length; bo++) {
-              if (response[b].id === owendBooks[bo].id) {
-                response[b]["shelf"] = owendBooks[bo].shelf;
+              if (searchReturnedBooks[b].id === owendBooks[bo].id) {
+                searchReturnedBooks[b]["shelf"] = owendBooks[bo].shelf;
               }
-              // if not set shelf to "none"
             }
           }
 
-          setResultBooks(response);
+          setResultBooks(searchReturnedBooks);
         } else {
           console.log("No Data");
         }
       });
     }, 1000);
+
+    setSearchInput(event.target.value);
   };
 
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <Link className="close-search" to="/">
-          Close
-        </Link>
+        <Link className="close-search" to="/"> Close </Link>
         <div className="search-books-input-wrapper">
-          <input
-            type="text"
-            placeholder="Search by title, author, or ISBN"
-            value={searchInput}
-            onChange={searchOnChange}
-          />
+          <input type="text" placeholder="Search by title, author, or ISBN" value={searchInput}  onChange={searchOnChange} />
         </div>
       </div>
       <div className="search-books-results">
@@ -85,7 +85,7 @@ const SearchView = () => {
                       value={book.shelf}
                       onChange={(event) => dropdownOnChange(event, book)}
                     >
-                      <option value="none" disabled>
+                      <option disabled>
                         Move to...
                       </option>
                       <option value="currentlyReading">

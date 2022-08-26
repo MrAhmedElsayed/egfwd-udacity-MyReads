@@ -1,10 +1,13 @@
 import React from "react";
 import Book from "./Book";
 
-const BookShelf = ({books}) => {
-  
-    const shelves = [
-    { id: "1", shelfName: "currentlyReading", shelfDisplayName: "Currently Reading"},
+const BookShelf = ({ books, onUpdateBookShelf }) => {
+  const shelves = [
+    {
+      id: "1",
+      shelfName: "currentlyReading",
+      shelfDisplayName: "Currently Reading",
+    },
     { id: "2", shelfName: "wantToRead", shelfDisplayName: "Want To Read" },
     { id: "3", shelfName: "read", shelfDisplayName: "Read" },
   ];
@@ -20,7 +23,11 @@ const BookShelf = ({books}) => {
                 .filter((f) => f.shelf === s.shelfName)
                 .map((book) => (
                   <li key={book.id}>
-                    <Book book={book} shelves={shelves} onUpdateBookShelf={onUpdateBookShelf} />
+                    <Book
+                      book={book}
+                      shelves={shelves}
+                      onUpdateBookShelf={onUpdateBookShelf}
+                    />
                   </li>
                 ))}
             </ol>
