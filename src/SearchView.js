@@ -27,17 +27,16 @@ const SearchView = () => {
 
   const searchOnChange = (event) => {
 
+    setSearchInput(event.target.value);
+
+
     if (event.target.value === "" ) {
       setResultBooks([])
       setSearchInput("")
       return
     }
  
-    // if (!event.target.value) return setResultBooks([]);
-
     clearTimeout(filterTimeout);
-    
-    setSearchInput(event.target.value);
 
     filterTimeout = setTimeout(() => {
       search(searchInput, 300).then((searchReturnedBooks) => {
@@ -56,7 +55,7 @@ const SearchView = () => {
           setResultBooks(searchReturnedBooks);
 
         } else {
-          console.log("No Data");
+          setResultBooks([])
         }
       });
     }, 1000);
