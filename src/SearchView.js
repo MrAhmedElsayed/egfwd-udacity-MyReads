@@ -26,6 +26,10 @@ const SearchView = () => {
   let filterTimeout;
 
   const searchOnChange = (event) => {
+
+    if (event.target.value === "" ) {
+      setResultBooks([])
+    }
     
     if (!event.target.value) return setResultBooks([]);
 
