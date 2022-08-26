@@ -1,13 +1,34 @@
-import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
-import { search, update, getAll } from "./BooksAPI";
+import { useState, useMemo, useEffect } from "react";
+// import debounce from "lodash.debounce";
+import { debounce } from "lodash";
 import defaultImage from "./images/default_img.jpg";
+import { search, update, getAll } from "./BooksAPI";
+import { Link } from "react-router-dom";
 
 const SearchView = () => {
-  
-  const [searchInput, setSearchInput] = useState("");
+  const [query, setQuery] = useState("");
   const [resultBooks, setResultBooks] = useState([]);
   const [owendBooks, setOwendBooks] = useState([]);
+
+  useEffect(() => {
+    search(query, 50).then((response) => {
+      if (response) {
+        for (let b = 0; b < response.length; b++) {
+          response[b]["shelf"] = "none";
+          for (let bo = 0; bo < owendBooks.length; bo++) {
+            if (response[b].id === owendBooks[bo].id) {
+              response[b]["shelf"] = owendBooks[bo].shelf;
+            }
+          }
+        }
+        setResultBooks(response);
+      } else {
+        setResultBooks([]);
+      }
+    });
+  }, [query]);
+
+
 
   useEffect(() => {
     getAll().then((books) => {
@@ -23,52 +44,50 @@ const SearchView = () => {
       .catch((err) => console.log(err));
   };
 
-  let filterTimeout;
+  useEffect(() => {
+    return () => {
+      debouncedResults.cancel();
+    };
+  });
 
-  const searchOnChange = (event) => {
-
-    setSearchInput(event.target.value);
-
-
-    if (event.target.value === "" ) {
-      setResultBooks([])
-      setSearchInput("")
-      return
-    }
- 
-    clearTimeout(filterTimeout);
-
-    filterTimeout = setTimeout(() => {
-      search(searchInput, 300).then((searchReturnedBooks) => {
-        if (searchReturnedBooks.length > 0) {
-          for (let b = 0; b < searchReturnedBooks.length; b++) {
-            
-            searchReturnedBooks[b]["shelf"] = "none";
-
-            for (let bo = 0; bo < owendBooks.length; bo++) {
-              if (searchReturnedBooks[b].id === owendBooks[bo].id) {
-                searchReturnedBooks[b]["shelf"] = owendBooks[bo].shelf;
-              }
-            }
-          }
-
-          setResultBooks(searchReturnedBooks);
-
-        } else {
-          setResultBooks([])
-        }
-      });
-    }, 1000);
-
-    
+  const handleChange = (e) => {
+    setQuery(e.target.value);
   };
+
+  const debouncedResults = useMemo(() => {
+    return debounce(handleChange, 400);
+  }, []);
+
+  // if (query !== "") {
+  //   search(query, 50).then((response) => {
+  //     if (response) {
+  //       for (let b = 0; b < response.length; b++) {
+  //         response[b]["shelf"] = "none";
+  //         for (let bo = 0; bo < owendBooks.length; bo++) {
+  //           if (response[b].id === owendBooks[bo].id) {
+  //             response[b]["shelf"] = owendBooks[bo].shelf;
+  //           }
+  //         }
+  //       }
+  //       setResultBooks(response);
+  //     } else {
+  //       setResultBooks([]);
+  //     }
+  //   });
+  // }
 
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <Link className="close-search" to="/"> Close </Link>
+        <Link className="close-search" to="/">
+          Close
+        </Link>
         <div className="search-books-input-wrapper">
-          <input type="text" placeholder="Search by title, author, or ISBN" value={searchInput}  onChange={searchOnChange} />
+          <input
+            type="text"
+            placeholder="Search by title, author, or ISBN"
+            onChange={debouncedResults}
+          />
         </div>
       </div>
       <div className="search-books-results">
@@ -93,9 +112,7 @@ const SearchView = () => {
                       value={book.shelf}
                       onChange={(event) => dropdownOnChange(event, book)}
                     >
-                      <option disabled>
-                        Move to...
-                      </option>
+                      <option disabled>Move to...</option>
                       <option value="currentlyReading">
                         Currently Reading
                       </option>
